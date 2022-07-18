@@ -113,11 +113,11 @@ public class Program {
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 10; j++) {
                 if (i ==  10 - map[j][1]) {
-                    System.out.print(result[i][j]);
+                    System.out.printf("%2d", result[i][j]);
                 } else {
-                    System.out.print((char) result[i][j]);
+                    System.out.printf("%2c", (char) result[i][j]);
                 }
-                System.out.print(" ");
+                System.out.print( " " );
 
             }
             System.out.println("");
