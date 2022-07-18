@@ -14,7 +14,6 @@ public class Program {
 
     public static long addNumber(Scanner in1, long holder) {
 
-//        Scanner in1 = new Scanner(System.in);
 
         int inputNum = in1.nextInt();
         int min = inputNum;
@@ -22,7 +21,11 @@ public class Program {
 
 
         for (int i = 0; i < 4; i++) {
-            
+
+            if (!in1.hasNextInt()) {
+                exitWithError(in1);
+            }
+
             temp = in1.nextInt();
 
             if (temp < min) {
@@ -63,8 +66,16 @@ public class Program {
     }
 
     public static String readConsole(Scanner in, int currentWeekNumber) {
-        String firstVal = in.next();
+        String firstVal = null;
+
+        if (!in.hasNext()) {
+            exitWithError(in);
+        }
+        firstVal = in.next();
         if ("Week".equals(firstVal)) {
+            if (!in.hasNextInt()) {
+                exitWithError(in);
+            }
             if (currentWeekNumber != in.nextInt()) {
                 exitWithError(in);
             }
