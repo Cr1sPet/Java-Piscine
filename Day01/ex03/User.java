@@ -1,10 +1,11 @@
-package ex01;
+package ex03;
 
 class User {
 
     private final Integer id;
     private String name;
     private Integer balance;
+    private TransactionsList transactionsList;
 
     public User() {
         this.id = UserIdsGenerator.getInstance().generateId();

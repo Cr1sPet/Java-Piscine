@@ -1,5 +1,7 @@
 package ex02;
 
+import ex03.UserNotFoundException;
+
 import java.util.ArrayList;
 
 public class Program {
@@ -18,6 +20,9 @@ public class Program {
             System.out.println(usersList.getByIndex(i));
         }
         System.out.println(usersList.size());
+
+
+        System.out.println(usersList.getById(100));
 
 
     }

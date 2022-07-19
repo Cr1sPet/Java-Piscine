@@ -1,6 +1,6 @@
-package ex02;
+package ex03;
 
-public class UsersArrayLIst implements UsersList{
+public class UsersArrayLIst implements UsersList {
 
     private User[] users;
 
@@ -24,7 +24,7 @@ public class UsersArrayLIst implements UsersList{
     public void add(User user) {
         if (currentSize == capacity) {
             capacity += capacity / 2;
-            User []temp = new User[capacity];
+            User[]temp = new User[capacity];
             for (int i = 0; i < currentSize; i++) {
                 temp[i] = users[i];
             }
