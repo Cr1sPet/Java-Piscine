@@ -1,29 +1,26 @@
 
-package ex00;
-
 public class Program {
 
+    public static final int BASE = 10;
 
-    public static int calculateSum(int num) {
+    public static int calculateSum(int number) {
 
         int sum = 0;
 
-
-        while (num > 0) {
-            sum += num % 10;
-            num /= 10;
+        while (number > 0) {
+            sum += number % BASE;
+            number /= BASE;
         }
         return sum;
     }
 
     public static void main(String[]args){
 
-        int num = 479598;
+        int number = 479598;
 
-        int ret = calculateSum(num);
+        int ret = calculateSum(number);
 
         System.out.println(ret);
-
     }
 }
 

@@ -1,48 +1,30 @@
-package ex01;
+
 
 
 import java.util.Scanner;
 
 public class Program {
 
-
-    public static void exitPrintResult(boolean isPrime, int iterationsNumber) {
+    public static void exitPrintResult(boolean isPrime, long iterationsNumber, Scanner in) {
+        in.close();
         System.out.println(isPrime + " " + iterationsNumber);
         System.exit(0);
     }
 
+    public static void checkPrime (long num, Scanner in) {
 
-    public static int mySqrt(int num) {
+        long i = 2;
 
-        int ret = 1;
-
-        for (int i = 0; i < num; i++) {
-            if (i * i >= num) {
-                ret = i;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    public static void checkPrime (int num) {
-
-        int limit = mySqrt(num);
-        int j = 0;
-        for (int i = 2; i < limit; i++) {
-            j++;
+        for ( ; i * i <= num; i++) {
             if (num % i == 0) {
-                exitPrintResult(false, j);
+                exitPrintResult(false, i - 1, in);
             }
         }
-        j++;
-        exitPrintResult(true, j);
+        exitPrintResult(true, i - 1, in);
     }
 
     public static void main(String[]args){
 
-         
         Scanner in = new Scanner(System.in);
         
         int inputNum =  in.nextInt();
@@ -51,11 +33,8 @@ public class Program {
             System.err.println("IllegalArgument");
             System.exit(-1);
         }
-
-        checkPrime(inputNum);
-
+        checkPrime(inputNum, in);
         in.close();
-
     }
 }
 

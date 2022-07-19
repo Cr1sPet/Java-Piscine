@@ -1,5 +1,3 @@
-package ex02;
-
 
 import java.util.Scanner;
 
@@ -44,16 +42,19 @@ public class Program {
         
 
     public static boolean checkCofeeRequest(int num) {
-
         return checkPrime(calculateSum(num));
-
     }
 
     public static void main(String[]args){
 
         Scanner in = new Scanner(System.in);
 
-        int inputNum = in.nextInt();
+        int inputNum;
+
+        if  (!in.hasNextInt()) {
+            System.exit(-1);
+        }
+        inputNum = in.nextInt();
 
         int result = 0;
 
@@ -63,9 +64,7 @@ public class Program {
             }
             inputNum = in.nextInt();
         }
-
-        System.out.println("Count of coffee - request - " + result);
-
+        System.out.println("Count of coffee-request - " + result);
         in.close();
     }
 }
