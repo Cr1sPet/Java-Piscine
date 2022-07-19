@@ -14,6 +14,8 @@ public class Program {
     public static final int TIME_START_LESSONS = 1;
     public static final int TIME_END_LESSONS = 6;
 
+    public static final int MONTH_LENGTH = 30;
+
     public static final String []WEEK_DAYS = {"TU", "WE", "TH", "FR", "SA", "SU", "MO"};
 
     public static final String[]MONTH_DAYS = {"1", "2", "3", "4", "5",
@@ -119,27 +121,6 @@ public class Program {
         }
     }
 
-//    public static void fillMonthSchedule(String[][]classesList, Scanner in) {
-//        String []monthDays
-//    }
-
-
-    public static void printHeader( String[][]classesList, String[][] attendanceList, int attListSize) {
-        for (int i = 0; i < 30; i++) {
-
-            for (int j = 0; classesList[i % 7][j] != null && j < MAX_WEEK_LESSON_NUMBER; j++) {
-                System.out.printf("%4s:00 %s  %s|", classesList[i % 7][j],
-                        WEEK_DAYS[i % 7], MONTH_DAYS[i]);
-            }
-
-        }
-        for (int i = 0; attendanceList[i][0] != null && i < attListSize; i++) {
-            System.out.println();
-        }
-
-
-    }
-
 
 
     public static void sortStringArray(String []arr) {
@@ -173,107 +154,97 @@ public class Program {
 
     }
 
-    public static boolean isPresent(String[] studentList, String student) {
+    public static int getIndexName(String[] studentList, String student) {
         for (int i = 0; studentList[i] != null && i < MAX_STUDENTS_NUM; i++) {
             if (studentList[i].equals(student)) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
-    public static boolean isNumber ( String input ) {
 
-        char[] arr = input.toCharArray();
-
-        if (arr[0] == '0') {
-            return false;
-        }
-
-        for (int i = 0; i < input.length(); i++) {
-            if (!(arr[i] >= '0' && arr[i] <= '9'))
-                return false;
-        }
-
-        return true;
-    }
-
-    public static String[][] readAttendance(String[] studentsList, int studentsSize, Scanner in) {
-        String[][]ret = new String[MAX_STUDENTS_NUM * studentsSize][4];
+    public static String[][][] readAttendance(String[] studentsList, int studentsSize, Scanner in) {
+        String[][][]ret = new String[studentsSize][MONTH_LENGTH][TIME_END_LESSONS - TIME_START_LESSONS];
         for (int i = 0; i < MAX_STUDENTS_NUM * studentsSize; i++) {
             checkNext(in);
             String name = in.next();
             if (name.equals(".")) {
                 break;
             }
-            if (!isPresent(studentsList, name)) {
+            int ind = getIndexName(studentsList, name);
+            if (ind == -1) {
                 exitWithError("[ERROR] INCORRECT STUDENT NAME", in);
             }
-            ret[i][0] = name;
-            checkNext(in);
-            String time = in.next();
-            int timeInt =  time.toCharArray()[0] - '0';
-
-            if (timeInt > TIME_END_LESSONS || timeInt < TIME_START_LESSONS) {
-                exitWithError("[ERROR] INVALID TIME INPUT", in);
-            }
-            ret[i][1] = time;
-
-            String date = in.next();
-
-            if (!isNumber(date)) {
-                exitWithError("[ERROR] INVALID DATE INPUT", in);
-            }
-            ret[i][2] = date;
+            checkNextInt(in);
+            int time = in.nextInt();
+            checkNextInt(in);
+            int date = in.nextInt();
             checkNext(in);
             String here;
             here = in.next();
             if (!("NOT_HERE".equals(here) || "HERE".equals(here))) {
                 exitWithError("[ERROR] INVALID HERE INPUT", in);
             }
-            ret[i][3] = here;
+            ret[ind][date - 1][time - 1] = here.equals("HERE") ? "1" : "-1";
+//            System.out.printf("IND :%d TIME - 1 : %d, DATE - 1 : %d : VAL :%d", ind, (time - 1), (date - 1), ret[ind][date  - 1][time -1] );
         }
         return  ret;
     }
 
+    public static int countAttendance(String[] att) {
+        int ret = 0;
+        for (int i = 0; i < TIME_END_LESSONS - TIME_START_LESSONS; i++) {
+            if (att[i] != null) {
+                ret++;
+            }
+        }
+        return ret;
+    }
+
+    public static void printHeader( String[][]classesList, String[][][] attendanceList, String []names,  int studentsLength) {
+        System.out.printf("%10s", "");
+        for (int i = 0; i < MONTH_LENGTH; i++) {
+            for (int j = 0; classesList[i % 7][j] != null && j < MAX_WEEK_LESSON_NUMBER; j++) {
+                System.out.printf("%s:00 %s %2s|", classesList[i % 7][j],
+                        WEEK_DAYS[i % 7], MONTH_DAYS[i]);
+            }
+        }
+        System.out.println();
+        for (int i = 0; i < studentsLength; i++) {
+            System.out.printf("%9s|", names[i]);
+            for (int j = 0; j < MONTH_LENGTH; j++) {
+                if (classesList[j % 7][0] != null ) {
+                    if (countAttendance(attendanceList[i][j]) != 0) {
+                        for (int k = 0; k < TIME_END_LESSONS - TIME_START_LESSONS; k++) {
+                            if (attendanceList[i][j][k] != null) {
+                                System.out.printf("%10s|", attendanceList[i][j][k]);
+                            }
+                        }
+                    } else {
+                            System.out.printf("%10s|", "");
+                        }
+                }
+            }
+            System.out.println();
+        }
+
+    }
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
-
         String []studentsList = new String[MAX_STUDENTS_NUM];
-        int realStudentsListSize;
+        readNames(studentsList, in);
+        String [][]classesList = new String[DAYS_IN_WEEK][MAX_WEEK_LESSON_NUMBER];
+        readClasses(classesList, in);
         int i;
         for (i = 0; studentsList[i] != null && i < MAX_STUDENTS_NUM; i++);
-        realStudentsListSize = i;
-        readNames(studentsList, in);
-
-
-        String [][]classesList = new String[DAYS_IN_WEEK][MAX_WEEK_LESSON_NUMBER];
-
-        readClasses(classesList, in);
-
-        String[][] attendanceList = readAttendance(studentsList, realStudentsListSize, in);
-
-
+        int realStudentsListSize = i;
+//        readNames(studentsList, in);
+        String[][][] attendanceList = readAttendance(studentsList, realStudentsListSize, in);
         sortClassesByTime(classesList);
+        printHeader(classesList, attendanceList, studentsList, realStudentsListSize);
 
-        printHeader(classesList, attendanceList, realStudentsListSize * MAX_STUDENTS_NUM);
-
-
-
-//        System.out.println("###########################");
-//        for (int i = 0; i < MAX_STUDENTS_NUM && studentsList[i] != null; i++) {
-//            System.out.println(studentsList[i]);
-//        }
-//        System.out.println("###########################");
-//        for (int i = 0; i < DAYS_IN_WEEK; i++) {
-//            System.out.print(i + " = ");
-//            for (int j  = 0; j < MAX_WEEK_LESSON_NUMBER && classesList[i][j] != null; j++) {
-//                System.out.print(classesList[i][j] + " : ");
-//            }
-//            System.out.println();
-//        }
-//
     }
 
 }
