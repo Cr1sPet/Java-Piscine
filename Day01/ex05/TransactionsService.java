@@ -1,5 +1,3 @@
-package ex04;
-
 import java.util.UUID;
 
 public class TransactionsService {
@@ -27,6 +25,7 @@ public class TransactionsService {
         User recipient = usersList.getById(recipientId);
         User sender = usersList.getById(senderId);
 
+
         Transaction creditTransaction = new Transaction(sender, recipient,
                 Transaction.Category.CREDITS, -amount);
 
@@ -49,6 +48,9 @@ public class TransactionsService {
         recipient.setBalance(recipientNewBalance);
     }
 
+    public User getUserById(Integer id) {
+        return usersList.getById(id);
+    }
 
     public Transaction[]getUnpairedTransactions() {
 
@@ -73,7 +75,7 @@ public class TransactionsService {
                 User otherUser =  curTransactions[j].getSender() == thisUser ? curTransactions[j].getRecipient() : curTransactions[j].getSender();
                 Transaction[] otherTransactions = otherUser.getTransactions();
                 for (int k = 0; k < otherTransactions.length; k++) {
-                    if (curTransactions[j].getId() == otherTransactions[k].getId() ) {
+                    if (curTransactions[j].getId().equals(otherTransactions[k].getId())) {
                         ok = false;
                         break;
                     }

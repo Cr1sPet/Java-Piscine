@@ -1,8 +1,6 @@
-package ex04;
-
 import java.util.UUID;
 
-publiv class User {
+public class User {
 
     private final Integer id;
     private String name;
