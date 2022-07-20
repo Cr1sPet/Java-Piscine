@@ -1,6 +1,5 @@
-package ex03;
+package ex04;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.UUID;
 
 public class TransactionLInkedList implements TransactionsList {

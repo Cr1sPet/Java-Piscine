@@ -1,9 +1,5 @@
 package ex02;
 
-import ex03.UserNotFoundException;
-
-import java.util.ArrayList;
-
 public class Program {
 
     public static void main(String[] args) {
