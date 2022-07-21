@@ -10,10 +10,11 @@ public class Program {
 
 
     public static void main(String[] args) {
-        System.out.println("hello");
-
         try {
             SignatureAnalyzer signatureAnalyzer = SignatureAnalyzer.getInstance();
+            signatureAnalyzer.printConfig();
+            Menu menu = new Menu();
+            menu.start();
             signatureAnalyzer.printConfig();
         } catch (FileNotFoundException e) {
             System.out.println("Error in open file :" + e);

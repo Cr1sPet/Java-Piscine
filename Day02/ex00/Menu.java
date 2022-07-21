@@ -1,4 +1,4 @@
-import jdk.nashorn.internal.runtime.regexp.joni.ast.StringNode;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,11 +16,12 @@ public class Menu {
 
         SignatureAnalyzer signatureAnalyzer = SignatureAnalyzer.getInstance();
 
-
         String input;
         while ((input = reader.readLine()) != null && !"42".equals(input)) {
             signatureAnalyzer.findFileType(input);
+            System.out.println("PROCESSED");
         }
+//        System.out.println("Good bye!");
 
     }
 
