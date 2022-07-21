@@ -72,23 +72,11 @@ public class SignatureAnalyzer {
         byte[] signatures = new byte [maxSignatureLength];
         fis.read(signatures);
         String stringSignature = bytesToHex(signatures);
-        System.out.println("SIGNATURE :" + stringSignature);
         signaturesList.add(findTypeBySignature(stringSignature));
         fis.close();
     }
 
     public void printConfig() {
-
-//        System.out.println("MAX LENGTH" + maxSignatureLength);
-//
-//        for (Map.Entry entry : configSignaturesMap.entrySet()) {
-//            System.out.print(entry.getKey() + ":");
-//            String value = (String) entry.getValue();
-//            System.out.printf("{%s}", value);
-//            System.out.println();
-//        }
-//
-//        System.out.println("TYPES");
 
         for (String signature : signaturesList) {
             System.out.println(signature);

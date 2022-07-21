@@ -6,13 +6,9 @@ import java.util.Map;
 
 public class Program {
 
-
-
-
     public static void main(String[] args) {
         try {
             SignatureAnalyzer signatureAnalyzer = SignatureAnalyzer.getInstance();
-            signatureAnalyzer.printConfig();
             Menu menu = new Menu();
             menu.start();
             signatureAnalyzer.printConfig();

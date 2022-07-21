@@ -29,7 +29,11 @@ public class Program {
             sum += val * val;
         }
         squareSumB = Math.sqrt(sum);
-        return numerator / (squareSumA * squareSumB);
+        if (squareSumA == 0.0 || squareSumB == 0.0) {
+            return 0.0;
+        }
+        Double ret = numerator / (squareSumA * squareSumB);
+        return ret;
     }
 
     public static List<String> readFileToDictionary(Set<String> dictionary, String filePath) throws IOException {

@@ -21,7 +21,6 @@ public class Menu {
             signatureAnalyzer.findFileType(input);
             System.out.println("PROCESSED");
         }
-//        System.out.println("Good bye!");
 
     }
 
