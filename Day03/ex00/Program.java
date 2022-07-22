@@ -36,23 +36,21 @@ public class Program {
 
         parseArgs(args);
 
-        Multi egg = new Multi("Egg", displayCount);
-        Multi hen = new Multi("Hen", displayCount);
+
+        MyThread egg = new MyThread("Egg", displayCount);
+        MyThread henn = new MyThread("Henn", displayCount);
 
         egg.start();
-        hen.start();
+        henn.start();
 
+        try {
+            egg.join();
+            henn.join();
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
 
-//        try {
-//            egg.join();
-////            hen.join();
-//        } catch (InterruptedException e) {
-//            System.out.println(e.getMessage());
-//            System.out.println();
-//        }
-
-         currentThread().setName("Human");
-
+        Thread.currentThread().setName("Human");
         for(int i = 0; i < 50; i++) {
             System.out.println(currentThread().getName());
         }
