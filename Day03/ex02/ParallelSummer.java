@@ -8,70 +8,61 @@ public class ParallelSummer {
     private int arrayLength;
     private int step;
     private int []arr;
-    Object mutex = new Object();
+    Result result = new Result();
 
-    private static int returnSum = 0;
+    SummerThread[] summerThreads;
+
     public ParallelSummer(int array[], int threadsCount) {
 
         this.arr = array;
         this.threadsCount = threadsCount;
         arrayLength = array.length;
 
-        step = computeStep() - 1;
-
+        step = computeStep();
+        summerThreads = new SummerThread[threadsCount];
     }
 
     public int computeStep() {
-
-        int temp = arrayLength;
-        for (int i = 0; (++temp) % threadsCount != 0; i++) {
-            i++;
-        }
-        return  temp / threadsCount;
+        return  arrayLength / threadsCount;
     }
 
 
-    public int findArraySizeInInterval(int array[], int from, int to) {
-        int sum = 0;
-        for (int i = from; i <= to; i++) {
-            sum += array[i];
+    public int getSum() throws InterruptedException {
+
+        int from = 0;
+        int to = 0;
+        for (int i = 0; i < threadsCount - 1; i++) {
+
+            from = step * i;
+            to = from + step - 1;
+
+            summerThreads[i] = new SummerThread(from, to, arr, result, i + 1);
+
         }
-        return sum;
+
+        if (arrayLength % threadsCount != 0) {
+            step = arrayLength - (step * (threadsCount - 1));
+        }
+        if (threadsCount > 1) {
+            summerThreads[summerThreads.length - 1] =
+                    new SummerThread(to + 1, to + step, arr, result, summerThreads.length);
+        } else {
+            summerThreads[0] = new SummerThread(0, arrayLength - 1, arr, result, 1);
+        }
+
+        for (SummerThread thread : summerThreads) {
+            thread.run();
+        }
+
+        for (SummerThread thread : summerThreads) {
+            thread.join();
+        }
+
+        return result.resultValue;
     }
 
-    public int getSum() throws ExecutionException, InterruptedException {
 
-        List<Future> futureList = new ArrayList<>();
-
-        ExecutorService service = Executors.newFixedThreadPool(threadsCount);
-
-        for (int i = 0; i < arrayLength ; ) {
-            int to = i + step;
-            if (to >= arrayLength) {
-                to = arrayLength - 1;
-            }
-
-            int finalTo = to;
-            int finalI = i;
-
-            Future future = service.submit(() -> {
-                int sum = findArraySizeInInterval(arr, finalI, finalTo);
-                synchronized (mutex) {
-                    returnSum += sum;
-                }
-                System.out.printf("Thread-%s from %d to %d sum is %d\n",
-                        Thread.currentThread().getName().split("-")[3], finalI, finalTo, sum);
-            });
-            futureList.add(future);
-            i = ++i + step;
-        }
-
-        for (Future future : futureList) {
-            future.get();
-        }
-
-        service.shutdown();
-
-        return returnSum;
+    public class Result {
+        int resultValue = 0;
     }
 }
