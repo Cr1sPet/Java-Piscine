@@ -1,10 +1,8 @@
-package ex00;
-
 public class MyThread  extends Thread {
 
     int count = 0;
 
-    MyThread(String name, int count) {
+    public MyThread(String name, int count) {
         super(name);
         this.count = count;
     }

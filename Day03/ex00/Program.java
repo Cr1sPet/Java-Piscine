@@ -1,11 +1,7 @@
-package ex00;
-
 
 import static java.lang.Thread.currentThread;
 
 public class Program {
-
-    public static final String PARAMETER = "--count=";
 
     public static Integer displayCount;
 
