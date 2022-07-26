@@ -9,6 +9,14 @@ public class Chatroom {
     private String owner;
     private List<Message> messages;
 
+
+    public Chatroom(Long id, String name, String owner, List<Message> messages) {
+        this.id = id;
+        this.name = name;
+        this.owner = owner;
+        this.messages = messages;
+    }
+
     public Long getId() {
         return id;
     }
