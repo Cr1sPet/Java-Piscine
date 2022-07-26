@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public class Message {
 
     private Long id;
-    private Long author;
-    private String room;
+    private User author;
+    private Chatroom room;
     private String text;
     private LocalDateTime date;
 

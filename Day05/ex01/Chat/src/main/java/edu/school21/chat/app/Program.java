@@ -2,9 +2,8 @@ package edu.school21.chat.app;
 
 import com.zaxxer.hikari.HikariDataSource;
 import edu.school21.chat.repositories.MessagesRepository;
-import edu.school21.chat.repositories.MessagesRepositoryImpl;
+import edu.school21.chat.repositories.MessagesRepositoryJdbcImpl;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -23,7 +22,7 @@ public class Program {
         ds.setUsername(USER);
         ds.setPassword(PASS);
 
-        MessagesRepository repository = new MessagesRepositoryImpl(ds);
+        MessagesRepository repository = new MessagesRepositoryJdbcImpl(ds);
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a message ID");
