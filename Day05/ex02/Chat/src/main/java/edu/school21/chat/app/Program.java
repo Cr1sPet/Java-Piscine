@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 import edu.school21.chat.models.Message;
+import exceptions.NotSavedSubEntityException;
 
 public class Program {
 
@@ -29,10 +30,14 @@ public class Program {
 
         User creator = new User(5L, "user", "user", new ArrayList(), new ArrayList());
         User author = creator;
-        Chatroom room = new Chatroom(100000L, "room", creator, new ArrayList());
+        Chatroom room = new Chatroom(6L, "room", creator, new ArrayList());
         Message message = new Message(null, author, room, "Hello!", LocalDateTime.now());
         MessagesRepository messagesRepository = new MessagesRepositoryImpl(ds);
-        messagesRepository.save(message);
-        System.out.println(message.getId()); // ex. id == 11
+        try {
+            messagesRepository.save(message);
+            System.out.println(message.getId());
+        } catch (NotSavedSubEntityException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

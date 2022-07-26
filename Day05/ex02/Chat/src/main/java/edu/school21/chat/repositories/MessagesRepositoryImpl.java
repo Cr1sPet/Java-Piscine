@@ -74,13 +74,36 @@ public class MessagesRepositoryImpl implements MessagesRepository {
         return retMessageOptional;
     }
 
+    private void checkAuthor(User author, Connection connection) throws SQLException {
+
+            Statement statement = connection.createStatement();
+            String query = "SELECT * FROM users WHERE id = " + author.getId();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next() == false) {
+                throw new NotSavedSubEntityException("Cannot save message because Cannot find author by id : " + author.getId());
+            }
+    }
+
+    private void checkRoom(Chatroom chatroom, Connection connection) throws SQLException {
+
+        Statement statement = connection.createStatement();
+        String query = "SELECT * FROM chatroom WHERE id = " + chatroom.getId();
+        ResultSet resultSet = statement.executeQuery(query);
+        if (resultSet.next() == false) {
+            throw new NotSavedSubEntityException("Cannot save message because Cannot find author by id : " + chatroom.getId());
+        }
+    }
     @Override
     public void save(Message message) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet key = null;
+
+
         try {
             conn = ds.getConnection();
+            checkRoom(message.getRoom(), conn);
+            checkAuthor(message.getAuthor(), conn);
             String sql = String.format(
                     "INSERT INTO messages (room_id, author_id, message, time) VALUES (%d, %d, '%s', '%s')",
                     message.getRoom().getId(),
@@ -94,16 +117,9 @@ public class MessagesRepositoryImpl implements MessagesRepository {
             key = stmt.getGeneratedKeys();
             key.next();
             message.setId(key.getLong(1));
-            if (message.getId() == null) {
-                throw new NotSavedSubEntityException("Cannot save message");
-            }
-//            rs = stmt.execute();
-//            rs.next();
 
-        } catch(Exception e) {
-//            System.out.println(e.getMessage());
-//            System.out.println("dsfsd");
-            e.printStackTrace();
+        } catch(SQLException e) {
+            System.out.println(e);
         } finally {
             try { if (key != null) key.close(); } catch (Exception e) {};
             try { if (stmt != null) stmt.close(); } catch (Exception e) {};
