@@ -30,7 +30,9 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
                 ResultSet rs = stmt.executeQuery();
         ) {
             while (rs.next()) {
-                products.add(new Product(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+                Product product = new Product(rs.getInt(1), rs.getString(2), rs.getInt(3));
+                products.add(product);
+                System.out.println(product);
             }
         }
         return products;
@@ -51,23 +53,53 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
             product.setId(rs.getInt(1));
             product.setName(rs.getString(2));
             product.setPrice(rs.getInt(3));
+            retProductOptional = Optional.of(product);
 
         }
         return retProductOptional;
     }
 
     @Override
-    public void update(Product product) {
+    public void update(Product product) throws SQLException {
+        String sql = String.format("UPDATE product SET name = ''%s', price = %d WHERE id = %d",
+                    product.getName(),
+                    product.getPrice(),
+                    product.getId()
+        );
 
+        try (
+                Connection con = ds.getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql);
+        ) {
+            stmt.execute();
+        }
     }
 
     @Override
-    public void save(Product product) {
+    public void save(Product product) throws SQLException {
 
+        String sql = String.format(
+                "INSERT INTO product (id, name, price) VALUES (%d, %d, '%s', '%s')",
+                product.getId(),
+                product.getName(),
+                product.getPrice()
+        );
+
+        try (
+                Connection con = ds.getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql);
+        ) {
+            stmt.execute();
+        }
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws SQLException {
+        String sql = "DELETE FROM product WHERE id = " + id;
 
+        try (
+                Connection con = ds.getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql)
+        ) {}
     }
 }

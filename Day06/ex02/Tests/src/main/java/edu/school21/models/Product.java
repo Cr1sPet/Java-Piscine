@@ -41,17 +41,27 @@ public class Product {
         this.price = price;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return getId().equals(product.getId()) && getName().equals(product.getName()) && getPrice().equals(product.getPrice());
+        return getId().equals(product.getId())
+                && getName().equals(product.getName())
+                && getPrice().equals(product.getPrice());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getPrice());
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

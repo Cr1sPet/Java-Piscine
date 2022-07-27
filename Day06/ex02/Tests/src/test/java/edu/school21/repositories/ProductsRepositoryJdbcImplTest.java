@@ -21,8 +21,8 @@ public class ProductsRepositoryJdbcImplTest {
     final List<Product> EXPECTED_FIND_ALL_PRODUCTS = Arrays.asList(new Product (1, "ball", 150),
             new Product (2, "sneakers", 500),
             new Product (3, "shorts", 300),
-            new Product (4, "T-shorts", 450),
-            new Product (4, "backpack", 300));
+            new Product (4, "T-shirt", 450),
+            new Product (5, "backpack", 300));
 
     @BeforeEach
     void init() {
@@ -35,13 +35,13 @@ public class ProductsRepositoryJdbcImplTest {
     }
 
     @Test
-    void testFindById() throws SQLException {
+    void testFindAll() throws SQLException {
         Assertions.assertEquals(EXPECTED_FIND_ALL_PRODUCTS, repositoryJdbc.findAll());
     }
 
     @Test
-    void testFindAllById() throws SQLException {
-        Assertions.assertEquals(EXPECTED_UPDATED_PRODUCT, repositoryJdbc.findById(1L));
+    void testFindById() throws SQLException {
+        Assertions.assertEquals(EXPECTED_UPDATED_PRODUCT, repositoryJdbc.findById(1L).get());
     }
 
 

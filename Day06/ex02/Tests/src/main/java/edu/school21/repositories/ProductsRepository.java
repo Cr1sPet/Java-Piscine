@@ -10,8 +10,8 @@ public interface ProductsRepository {
 
     List<Product> findAll() throws SQLException;
     Optional<Product> findById(Long id) throws SQLException;
-    void update(Product product);
-    void save(Product product);
-    void delete (Long id);
+    void update(Product product) throws SQLException;
+    void save(Product product) throws SQLException;
+    void delete (Long id) throws SQLException;
 
 }
