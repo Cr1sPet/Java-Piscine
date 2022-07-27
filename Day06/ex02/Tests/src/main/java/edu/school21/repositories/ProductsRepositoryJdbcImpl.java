@@ -30,9 +30,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
                 ResultSet rs = stmt.executeQuery();
         ) {
             while (rs.next()) {
-                Product product = new Product(rs.getInt(1), rs.getString(2), rs.getInt(3));
-                products.add(product);
-                System.out.println(product);
+                products.add(new Product(rs.getInt(1), rs.getString(2), rs.getInt(3)));
             }
         }
         return products;
@@ -61,7 +59,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
 
     @Override
     public void update(Product product) throws SQLException {
-        String sql = String.format("UPDATE product SET name = ''%s', price = %d WHERE id = %d",
+        String sql = String.format("UPDATE product SET name = '%s', price = %d WHERE id = %d",
                     product.getName(),
                     product.getPrice(),
                     product.getId()
@@ -79,8 +77,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
     public void save(Product product) throws SQLException {
 
         String sql = String.format(
-                "INSERT INTO product (id, name, price) VALUES (%d, %d, '%s', '%s')",
-                product.getId(),
+                "INSERT INTO product (name, price) VALUES ('%s', %d)",
                 product.getName(),
                 product.getPrice()
         );
@@ -89,7 +86,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
                 Connection con = ds.getConnection();
                 PreparedStatement stmt = con.prepareStatement(sql);
         ) {
-            stmt.execute();
+            stmt.executeUpdate();
         }
     }
 
@@ -100,6 +97,8 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
         try (
                 Connection con = ds.getConnection();
                 PreparedStatement stmt = con.prepareStatement(sql)
-        ) {}
+        ) {
+            stmt.execute();
+        }
     }
 }
