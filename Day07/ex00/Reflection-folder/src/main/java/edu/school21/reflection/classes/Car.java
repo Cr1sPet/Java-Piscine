@@ -13,6 +13,10 @@ public class Car {
         this.price = 0;
     }
 
+    public void sound() {
+        System.out.println("Brum-Brum");
+    }
+
     @Override
     public String toString() {
         return "Car{" +

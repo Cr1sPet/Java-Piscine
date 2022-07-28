@@ -134,6 +134,7 @@ public class ClassesAnalyzer {
 
 
     public void createObject() throws IOException {
+        System.out.println("Let's create an object.");
         String input;
         try {
             obj = aClass.getDeclaredConstructor().newInstance();
@@ -160,7 +161,6 @@ public class ClassesAnalyzer {
         boolean ok = true;
         for (Field field : fields) {
             String temp = field.getName();
-            System.out.println(temp);
             if (temp.equals(input)) {
                 System.out.println("Enter " + field.getType().getSimpleName() + " value:");
                 input = read();
@@ -188,7 +188,11 @@ public class ClassesAnalyzer {
             if (method.getName().equals(funcName)) {
                 parameters = method.getParameterTypes();
                 if (parameters.length == 0 && paramsArr.length == 1 && paramsArr[0].equals("")) {
-                    System.out.println(method.invoke(obj));
+                    if (method.getReturnType().getSimpleName().equals("void")) {
+                        method.invoke(obj);
+                    } else {
+                        System.out.println(method.invoke(obj));
+                    }
                     ok = false;
                 } else {
                     parameters = method.getParameterTypes();
@@ -230,6 +234,7 @@ public class ClassesAnalyzer {
         printClasses();
         printFieldsAndMethodsByClassName(read());
         createObject();
+        updateObject();
         callMethod();
     }
 
