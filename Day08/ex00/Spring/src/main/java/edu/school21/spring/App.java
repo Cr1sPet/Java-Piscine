@@ -29,11 +29,14 @@ public class App
     {
         standardWork();
 
-        System.out.println("\n#######################################\n");
-
+        System.out.println("#######################################");
         ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
         Printer printer = context.getBean("printer", Printer.class);
         printer.print("Hello");
+        System.out.println("#######################################");
+        ApplicationContext context1 = new ClassPathXmlApplicationContext("context.xml");
+        Printer printer1 = context1.getBean("printer1", Printer.class);
+        printer1.print("World");
 
     }
 }

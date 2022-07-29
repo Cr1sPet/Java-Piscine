@@ -11,7 +11,6 @@
     <bean id="printer"
           class="edu.school21.spring.printer.PrinterWithDateTimeImpl">
         <constructor-arg ref="rendererErr"/>
-<!--            <property name="prefix" value="Prefix"/>-->
     </bean>
 
     <bean id="rendererErr"
@@ -22,6 +21,24 @@
 
     <bean id="preProcessorToLower"
           class="edu.school21.spring.preprocessor.PreProcessorToLowerImpl">
+    </bean>
+
+    <!--#################################################-->
+
+    <bean id="printer1"
+          class="edu.school21.spring.printer.PrinterWithPrefixImpl">
+        <constructor-arg ref="rendererOut"/>
+            <property name="prefix" value="Prefix1"/>
+    </bean>
+
+    <bean id="rendererOut"
+          class="edu.school21.spring.renderer.RendererStandardImpl">
+        <constructor-arg ref="preProcessorToUpper"/>
+
+    </bean>
+
+    <bean id="preProcessorToUpper"
+          class="edu.school21.spring.preprocessor.PreProcessorToUpperImpl">
     </bean>
 
 </beans>
