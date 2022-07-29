@@ -9,9 +9,9 @@
 
 
     <bean id="printer"
-          class="edu.school21.spring.printer.PrinterWithPrefixImpl">
+          class="edu.school21.spring.printer.PrinterWithDateTimeImpl">
         <constructor-arg ref="rendererErr"/>
-            <property name="prefix" value="Prefix"/>
+<!--            <property name="prefix" value="Prefix"/>-->
     </bean>
 
     <bean id="rendererErr"
